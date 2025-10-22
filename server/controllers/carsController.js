@@ -21,11 +21,28 @@ export async function getCars(req, res) {
 export async function getCar(req, res) {
     try {
         const { id } = req.params
-        const { rows } = await pool.query('SELEC * FROM cars WHERE id=$1', [id])
+        const { rows } = await pool.query('SELECT * FROM cars WHERE id=$1', [id])
         if (!rows.length) return res.status(404).json({ error: 'Not found '})
         res.json(rows[0])
     } catch (err) {
         res.status(500).json({ error: 'Failed to fetch car' })
+    }
+}
+
+export async function createCar(req, res) {
+    try {
+        const { name, exterior, wheels, interior, price } = req.body
+        const invalid = validateCombo({ exterior, wheels })
+        if (invalid) return res.status(400).json({ error: invalid })
+
+        const { rows } = await pool.query(
+            `INSERT INTO cars (name, exterior, wheels, interior, price) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+            [name, exterior, wheels, interior, price]
+        )
+        res.status(201).json(rows[0])
+    } catch (err) {
+        console.error(' createCar error:', err)
+        res.status(500).json({ error: 'Failed to create car' })
     }
 }
 

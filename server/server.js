@@ -2,7 +2,7 @@ import express from 'express'
 import path from 'path'
 import favicon from 'serve-favicon'
 import dotenv from 'dotenv'
-import carsRouter from './routes/carsRoutes'
+import carsRouter from './routes/carsRoutes.js'
 
 // import the router from your routes file ^
 
