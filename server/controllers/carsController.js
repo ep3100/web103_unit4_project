@@ -18,7 +18,7 @@ export async function getCars(req, res) {
     }
 }
 
-export async function getCars(req, res) {
+export async function getCar(req, res) {
     try {
         const { id } = req.params
         const { rows } = await pool.query('SELEC * FROM cars WHERE id=$1', [id])
